@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import './filme-info.css'
 import api from '../../services/api';
+import { toast } from "react-toastify";
 
 function Filme () {
     const { id } = useParams();
@@ -37,18 +38,19 @@ function Filme () {
 
     function salvarFilme(){
         const minhaLista = localStorage.getItem('@primeflix');
-
+        
         let filmesSalvos = JSON.parse(minhaLista) || [];
 
         const hasFilme = filmesSalvos.some( (filmeSalvo) => filmeSalvo.id === filme.id);
 
         if (hasFilme) {
-            alert('Esse filme já está salvo');
+            toast.warn('Esse filme já está na sua lista!')
             return;
         }
 
         filmesSalvos.push(filme);
         localStorage.setItem('@primeflix', JSON.stringify(filmesSalvos));
+        toast.success('Filme salvo com sucesso!')
     }
 
     if (loading) {
